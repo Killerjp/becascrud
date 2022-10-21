@@ -54,7 +54,7 @@ class PeriodoController extends Controller
         $periodo = Periodo::create($request->all());
 
         return redirect()->route('periodos.index')
-            ->with('success', 'Periodo created successfully.');
+            ->with('success', 'Periodo creado');
     }
 
     /**
@@ -97,7 +97,7 @@ class PeriodoController extends Controller
         $periodo->update($request->all());
 
         return redirect()->route('periodos.index')
-            ->with('success', 'Periodo updated successfully');
+            ->with('success', 'Periodo actualizado');
     }
 
     /**
@@ -110,6 +110,6 @@ class PeriodoController extends Controller
         $periodo = Periodo::find($id)->delete();
 
         return redirect()->route('periodos.index')
-            ->with('success', 'Periodo deleted successfully');
+            ->with('success', 'Periodo eliminado');
     }
 }

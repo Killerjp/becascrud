@@ -19,9 +19,12 @@ class GastoController extends Controller
     public function index(Request $request)
     {
         $postulanteid = $request->id;
-        $gastos = Gasto::select('id','id_postulant','nombre_dg','monto_dg','observ_dg','documento_dg')
-                        ->where('id_postulant','LIKE',$postulanteid)                                                                
+        $gastos = Gasto::join('postulants', 'postulants.id', '=', 'gastos.id_postulant')
+                        ->select('postulants.nombre_post','postulants.id', 'postulants.periodo_id','postulants.users_id','gastos.id','gastos.id_postulant','gastos.nombre_dg','gastos.monto_dg','gastos.observ_dg','gastos.documento_dg')
+                        ->where('gastos.id_postulant','LIKE',$postulanteid)                        
                         ->get();
+
+                        
 
         return view('gasto.index', compact('gastos'));
     }
@@ -65,8 +68,10 @@ class GastoController extends Controller
         } 
         $newGasto->save();       
 
-        return redirect()->route('postulants.index')
+        return redirect()->route('postulants.index')        
             ->with('success3', 'Gasto creado .');
+            
+
 
 
         

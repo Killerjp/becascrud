@@ -34,10 +34,10 @@ class AppServiceProvider extends ServiceProvider
             return auth()->user()->rol === 2;
         });
         Blade::if('beca', function(){
-            return auth()->user()->rol === 3;
+            return auth()->user()->rol === 4;
         });
         Blade::if('user', function(){
-            return auth()->user()->rol === 4;
+            return auth()->user()->rol === 3;
         });
     }
 }

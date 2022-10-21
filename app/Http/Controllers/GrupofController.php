@@ -6,6 +6,8 @@ use App\Models\Periodo;
 use App\Models\Descuento;
 use App\Models\Postulant;
 use App\Models\Grupof;
+use App\Models\Gasto;
+use App\Models\Result;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
@@ -25,17 +27,38 @@ class GrupofController extends Controller
     {
         $date2 = date('Y', time());
         $postulanteid = $request->id;
-        $user_name = Auth::user()->name;        
+        $user_name = Auth::user()->name; 
+               
         
                
-        $grupofs= Grupof::select('id','id_postulant','id_user','periodo','nombre_gf','rut_gf','edad_gf','parentesco_gf','profesion_gf','ingresos_gf','documento')
-                                        ->where('id_postulant','LIKE',$postulanteid)
-                                        ->where('periodo','LIKE',$date2)                                        
-                                        ->get(); 
-                                  
+        $grupofs= Grupof::join('postulants', 'postulants.id', '=', 'grupofs.id_postulant')
+        ->select('postulants.nombre_post', 'grupofs.id','grupofs.id_postulant','grupofs.id_user','grupofs.periodo','grupofs.nombre_gf','grupofs.rut_gf','grupofs.edad_gf','grupofs.parentesco_gf','grupofs.profesion_gf','grupofs.ingresos_gf','grupofs.documento')
+        ->where('grupofs.id_postulant', 'LIKE',$postulanteid)
+        ->where('grupofs.periodo', 'LIKE',$date2)
+        ->get();
+        
+        $gastos = Gasto::join('postulants', 'postulants.id', '=', 'gastos.id_postulant')
+                         ->join('periodos', 'periodos.id', '=', 'postulants.periodo_id')
+                        ->select('postulants.id', 'postulants.periodo_id','postulants.users_id','gastos.id','gastos.id_postulant','gastos.nombre_dg','gastos.monto_dg','gastos.observ_dg','gastos.documento_dg','periodos.ano_pe')
+                        ->where('periodos.ano_pe', '=', $date2)
+                        ->where('gastos.id_postulant', '=', $postulanteid)
+                        ->get();
+
+         $result= Result::join('postulants', 'postulants.id', '=', 'results.idpostulantr')
+                        ->join('periodos', 'periodos.id', '=', 'results.idperiod')
+                        ->select('results.id','results.idpostulantr','results.idperiod','results.fecha_r','results.estado_r','results.monto_r','results.comentario_r','postulants.users_id','periodos.*','periodos.ano_pe')
+                        ->where('periodos.ano_pe','LIKE',$date2)
+                        ->where('results.idpostulantr','LIKE',$postulanteid)
+                        ->get();   
+                        
+        $postulants= Postulant::join('periodos', 'periodos.id', '=', 'postulants.periodo_id')
+                                ->select('postulants.id','postulants.rut_post','postulants.nombre_post','postulants.periodo_id','postulants.users_id','postulants.curso_post','postulants.apod_post','postulants.correoapo_post','postulants.descuento_post','periodos.ano_pe','periodos.inicio_pe','periodos.termino_Pe','periodos.montoanual')
+                                ->where('periodos.ano_pe','LIKE',$date2)
+                                ->where('postulants.id','LIKE',$postulanteid)
+                                ->get();
                                         
         
-        return view('grupof.index', compact('grupofs','user_name','postulanteid'));
+        return view('grupof.index', compact('grupofs','user_name','postulanteid','gastos','postulants','result'));
     }
 
    
@@ -50,7 +73,7 @@ class GrupofController extends Controller
         $user_id = Auth::user()->id;
         $postulanteid = $request->id;                        
         $grupof = new Grupof();
-        dd($postulanteid);
+       
         
         return view('grupof.create', compact('grupof','postulanteid','user_id','date'));
         
@@ -62,6 +85,8 @@ class GrupofController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+    
+
     public function store(Request $request)
     {
         $newGrupof = new Grupof();                 
@@ -85,7 +110,7 @@ class GrupofController extends Controller
         } 
         $newGrupof->save();       
 
-        return redirect()->route('postulants.index')
+        return redirect()->route('postulants.index') 
             ->with('success2', 'Integrante creado satisfactoriamente.');
     }
 
@@ -99,6 +124,7 @@ class GrupofController extends Controller
     {
         
         $grupof = Grupof::find($id);
+        
 
         return view('grupof.show', compact('grupof'));
     }
@@ -132,19 +158,15 @@ class GrupofController extends Controller
      */
     public function update(Request $request, Grupof $grupof)
     {
-        $rol = Auth::user()->rol;        
-        request()->validate(Grupof::$rules);
-        $admin = 1;
+                      
+        request()->validate(Grupof::$rules);        
         $grupof->update($request->all());
-        if( $rol = $admin ){
+        
             return redirect()->back()            
             ->with('success3', 'Integrante actualizado satisfactoriamente');
-        }
-        else
-        {
-        return redirect()->route('postulants.index')
-            ->with('success2', 'Integrante actualizado satisfactoriamente');
-        }
+        
+        
+        
     }
 
     /**

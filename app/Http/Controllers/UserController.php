@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Tipouser;
 use Illuminate\Http\Request;
-
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserController
@@ -22,6 +24,7 @@ class UserController extends Controller
     {
         $users = User::paginate();
 
+      
         return view('user.index', compact('users'))
             ->with('i', (request()->input('page', 1) - 1) * $users->perPage());
     }
@@ -45,14 +48,23 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        request()->validate(User::$rules);
+   
 
-        $user = User::create($request->all());
-
-        return redirect()->route('users.index')
-            ->with('success', 'User created successfully.');
+    public function store(Request $request){
+        $validate = $request->validate([
+            'name' => 'required',
+            'rol' => 'required',
+            'email' => 'required',
+            'password' => 'required'             
+        ]);       
+        
+        $data = $request->except('confirm-password', 'password');
+        $data['password'] = Hash::make($request->password);
+        User::create($data);        
+        return redirect()->route('login')
+        ->with('success', 'Usuario creado');;
+        
+       
     }
 
     /**
@@ -96,7 +108,7 @@ class UserController extends Controller
         $user->update($request->all());
 
         return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
+            ->with('success', 'Usuario Actualizado');
     }
 
     /**
@@ -109,6 +121,11 @@ class UserController extends Controller
         $user = User::find($id)->delete();
 
         return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+            ->with('success', 'Usuario eliminado');
+    }
+
+    public function exportallusers()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

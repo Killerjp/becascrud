@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')<br>
+@admin
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -34,20 +35,20 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>Id</th>
+                                        
                                         
 										<th>Año</th>
 										<th>Inicio Periodo</th>
 										<th>Termino Periodo</th>
 										<th>Mensualidad Anual</th>
 
-                                        <th></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($periodos as $periodo)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                           
                                             
 											<td>{{ $periodo->ano_pe }}</td>
 											<td>{{ $periodo->inicio_pe }}</td>
@@ -74,4 +75,15 @@
             </div>
         </div>
     </div>
+    @endadmin
+    @user
+    <center>
+    <b>Usted no tiene autorizacion para este contenido</b>   
+</center>
+    @enduser
+    @secre
+    <center>
+    <b>Usted no tiene autorizacion para este contenido</b>
+</center>
+    @endsecre
 @endsection

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-@secre (session('status'))
+@user (session('status'))
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -47,7 +47,7 @@
             </div>
         </div>
     </section>
-@endsecre
+@enduser
 @admin (session('status'))
     <section class="content container-fluid">
         <div class="row">

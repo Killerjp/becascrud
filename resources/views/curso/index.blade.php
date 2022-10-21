@@ -4,7 +4,9 @@
     Cursos
 @endsection
 
-@section('content')<br>
+@section('content')
+@admin
+<br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -34,17 +36,16 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>Id</th>
+                                        
                                         
 										<th>Nombre Curso</th>
 
-                                        <th></th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cursos as $curso)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
+                                        <tr>                            
                                             
 											<td>{{ $curso->nombre_c }}</td>
 
@@ -68,4 +69,17 @@
             </div>
         </div>
     </div>
+    @endadmin
+    @user('js')    
+<script>
+    alert('Usuario sin privilegios para ver este contenido');
+    window.location.href="{{ route('logout') }}" ;
+</script>
+   @enduser
+    @beca
+    <center><b>Usuario sin privilegios para ver este contenido</b></center>
+    @endbeca
+    @secre
+    <center><b>Usuario sin privilegios para ver este contenido</b></center>
+    @endsecre
 @endsection

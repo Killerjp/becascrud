@@ -42,7 +42,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Obtenga un validador para una solicitud de registro entrante.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -58,7 +58,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Cree una nueva instancia de usuario después de un registro válido.
      *
      * @param  array  $data
      * @return \App\Models\User
@@ -71,5 +71,6 @@ class RegisterController extends Controller
             'email' => $data['email'],            
             'password' => Hash::make($data['password']),
         ]);
+        
     }
 }

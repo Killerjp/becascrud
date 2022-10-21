@@ -53,7 +53,7 @@
                                             </div>
                                             <div class="modal-group">
                                                 <label for="documento">Documento</label>
-                                                <input type="file" name="documento" class="form-control" id="documento" value="{{ $grupof->documento }}">
+                                                <input type="text" name="documento" class="form-control" id="documento" value="{{ $grupof->documento }}">
                                             </div>
                                             
                                             

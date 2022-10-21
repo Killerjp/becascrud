@@ -51,7 +51,7 @@
               <a href="{{ route('users.index') }}"><span class="fa fa-users mr-3 notif"></span>Usuarios</a>
           </li>
           <li>
-            <a href="{{ route('periodos.index') }}"><span class="fa fa-calendar mr-3"></span>Periodos</a>
+            <a href="{{ route('periodos.index') }}"><span class="fa fa-calendar mr-3"></span>Períodos</a>
           </li>
           <li>
             <a href="{{ route('cursos.index') }}"><span class="fa fa-cog mr-3"></span>Cursos</a>
@@ -59,12 +59,7 @@
           <li>
             <a href="{{ route('postulants.index') }}"><span class="fa fa-user mr-3"></span> Postulantes</a>
           </li>
-          <li>
-            <a href="{{ route('grupofs.index') }}"><span class="fa fa-users mr-3"></span>Grupo Familiar</a>
-          </li>
-          <li>
-            <a href="{{ route('gastos.index') }}"><span class="fa fa-money mr-3"></span>Declaracion de Gastos</a>
-          </li>
+          
           <li>
             
           <a class="dropdown-item" href="{{ route('logout') }}"
@@ -80,13 +75,15 @@
         </ul>
         @endadmin
         @secre (session('status'))
-        <ul class="list-unstyled components mb-5">         
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="{{ route('home') }}"><span class="fa fa-home mr-3"></span>Inicio</a>
+          </li>
+          
           <li>
             <a href="{{ route('postulants.index') }}"><span class="fa fa-user mr-3"></span> Postulantes</a>
           </li>
-          <li>
-            <a href="{{ route('grupofs.index') }}"><span class="fa fa-users mr-3"></span>Grupo Familiar</a>
-          </li>
+          
           <li>
             
           <a class="dropdown-item" href="{{ route('logout') }}"
@@ -101,6 +98,53 @@
           </li>
         </ul>
         @endsecre
+        @beca (session('status'))
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="{{ route('home') }}"><span class="fa fa-home mr-3"></span>Inicio</a>
+          </li>
+          
+          <li>
+            <a href="{{ route('postulants.index') }}"><span class="fa fa-user mr-3"></span> Postulantes</a>
+          </li>
+          
+          <li>
+            
+          <a class="dropdown-item" href="{{ route('logout') }}"
+                                             onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                             <i class='fa fa-sign-out mr-3'></i> <span class="nav_name">   {{ __('Salir') }}</span>
+                                             </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            
+                                                   @csrf
+                                                 </form>
+          </li>
+        </ul>
+        @endbeca
+        @user (session('status'))
+        <ul class="list-unstyled components mb-5"> 
+        <li class="active">
+            <a href="{{ route('home') }}"><span class="fa fa-home mr-3"></span>Inicio</a>
+          </li>        
+          <li>
+            <a href="{{ route('postulants.index') }}"><span class="fa fa-user mr-3"></span> Postular</a>
+          </li>
+         
+          <li>
+            
+          <a class="dropdown-item" href="{{ route('logout') }}"
+                                             onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                             <i class='fa fa-sign-out mr-3'></i> <span class="nav_name">   {{ __('Salir') }}</span>
+                                             </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            
+                                                   @csrf
+                                                 </form>
+          </li>
+        </ul>
+        @enduser
     	</nav>
 
         <!-- Page Content  -->

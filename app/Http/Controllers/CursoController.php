@@ -48,7 +48,7 @@ class CursoController extends Controller
         $curso = Curso::create($request->all());
 
         return redirect()->route('cursos.index')
-            ->with('success', 'Curso created successfully.');
+            ->with('success', 'Curso creado .');
     }
 
     /**
@@ -91,7 +91,7 @@ class CursoController extends Controller
         $curso->update($request->all());
 
         return redirect()->route('cursos.index')
-            ->with('success', 'Curso updated successfully');
+            ->with('success', 'Curso actualizado');
     }
 
     /**
@@ -104,6 +104,6 @@ class CursoController extends Controller
         $curso = Curso::find($id)->delete();
 
         return redirect()->route('cursos.index')
-            ->with('success', 'Curso deleted successfully');
+            ->with('success', 'Curso eliminado');
     }
 }
